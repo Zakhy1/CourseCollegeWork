@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <head>
+        <title>Интернет-магазин лодок, лодочных моторов и эхолотов</title>
+        <link href='http://fonts.googleapis.com/css?family=Raleway:400,200,600,800,700,500,300,100,900' rel='stylesheet'
+              type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Arimo:400,700,700italic' rel='stylesheet' type='text/css'>
+        <link href="css/bootstrap.css" rel='stylesheet' type='text/css'/>
+        <link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="js/jquery.min.js"></script>
+        <script src="js/script.js"></script>
+          <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      :root {
+        scroll-behavior: smooth;
+      }
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.5;
+      color: #212529;
+      background-color: #fff;
+      -webkit-text-size-adjust: 100%;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+
+    .timer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .timer__items {
+      display: flex;
+      font-size: 48px;
+    }
+
+    .timer__item {
+      position: relative;
+      min-width: 60px;
+      margin-left: 10px;
+      margin-right: 10px;
+      padding-bottom: 15px;
+      text-align: center;
+    }
+
+    .timer__item::before {
+      content: attr(data-title);
+      display: block;
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      font-size: 14px;
+    }
+
+    .timer__item:not(:last-child)::after {
+      content: ':';
+      position: absolute;
+      right: -15px;
+    }
+
+    .timer__result {
+      text-align: center;
+      padding: 10px;
+      color: #9c27b0;
+      font-weight: bold;
+    }
+
+    hr {
+      border-color: #fafafa;
+      border-style: solid;
+    }
+  </style>
+  <script>
+
+    // класс для создание таймера обратного отсчета
+    class CountdownTimer {
+      constructor(deadline, cbChange, cbComplete) {
+        this._deadline = deadline;
+        this._cbChange = cbChange;
+        this._cbComplete = cbComplete;
+        this._timerId = null;
+        this._out = {
+          days: '', hours: '', minutes: '', seconds: '',
+          daysTitle: '', hoursTitle: '', minutesTitle: '', secondsTitle: ''
+        };
+        this._start();
+      }
+      static declensionNum(num, words) {
+        return words[(num % 100 > 4 && num % 100 < 20) ? 2 : [2, 0, 1, 1, 1, 2][(num % 10 < 5) ? num % 10 : 5]];
+      }
+      _start() {
+        this._calc();
+        this._timerId = setInterval(this._calc.bind(this), 1000);
+      }
+      _calc() {
+        const diff = this._deadline - new Date();
+        const days = diff > 0 ? Math.floor(diff / 1000 / 60 / 60 / 24) : 0;
+        const hours = diff > 0 ? Math.floor(diff / 1000 / 60 / 60) % 24 : 0;
+        const minutes = diff > 0 ? Math.floor(diff / 1000 / 60) % 60 : 0;
+        const seconds = diff > 0 ? Math.floor(diff / 1000) % 60 : 0;
+        this._out.days = days < 10 ? '0' + days : days;
+        this._out.hours = hours < 10 ? '0' + hours : hours;
+        this._out.minutes = minutes < 10 ? '0' + minutes : minutes;
+        this._out.seconds = seconds < 10 ? '0' + seconds : seconds;
+        this._out.daysTitle = CountdownTimer.declensionNum(days, ['день', 'дня', 'дней']);
+        this._out.hoursTitle = CountdownTimer.declensionNum(hours, ['час', 'часа', 'часов']);
+        this._out.minutesTitle = CountdownTimer.declensionNum(minutes, ['минута', 'минуты', 'минут']);
+        this._out.secondsTitle = CountdownTimer.declensionNum(seconds, ['секунда', 'секунды', 'секунд']);
+        this._cbChange ? this._cbChange(this._out) : null;
+        if (diff <= 0) {
+          clearInterval(this._timerId);
+          this._cbComplete ? this._cbComplete() : null;
+        }
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // .timer-1 (на минуту)
+      const elDays1 = document.querySelector('.timer-1 .timer__days');
+      const elHours1 = document.querySelector('.timer-1 .timer__hours');
+      const elMinutes1 = document.querySelector('.timer-1 .timer__minutes');
+      const elSeconds1 = document.querySelector('.timer-1 .timer__seconds');
+      const deadline1 = new Date("March 1, 2023 03:24:00");
+      new CountdownTimer(deadline1, (timer) => {
+        elDays1.textContent = timer.days;
+        elHours1.textContent = timer.hours;
+        elMinutes1.textContent = timer.minutes;
+        elSeconds1.textContent = timer.seconds;
+        elDays1.dataset.title = timer.daysTitle;
+        elHours1.dataset.title = timer.hoursTitle;
+        elMinutes1.dataset.title = timer.minutesTitle;
+        elSeconds1.dataset.title = timer.secondsTitle;
+      }, () => {
+        document.querySelector('.timer-1 .timer__result').textContent = 'Таймер завершился!';
+      });
+
+      // .timer-2 (до конца месяца)
+      const elDays2 = document.querySelector('.timer-2 .timer__days');
+      const elHours2 = document.querySelector('.timer-2 .timer__hours');
+      const elMinutes2 = document.querySelector('.timer-2 .timer__minutes');
+      const elSeconds2 = document.querySelector('.timer-2 .timer__seconds');
+      const deadline2 = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1);
+      new CountdownTimer(deadline2, (timer) => {
+        elDays2.textContent = timer.days;
+        elHours2.textContent = timer.hours;
+        elMinutes2.textContent = timer.minutes;
+        elSeconds2.textContent = timer.seconds;
+        elDays2.dataset.title = timer.daysTitle;
+        elHours2.dataset.title = timer.hoursTitle;
+        elMinutes2.dataset.title = timer.minutesTitle;
+        elSeconds2.dataset.title = timer.secondsTitle;
+      }, () => {
+        document.querySelector('.timer-2 .timer__result').textContent = 'Таймер завершился!';
+      });
+
+    });
+  </script>
+    </head>
+</head>
+<body>
+<!--topheader starts-->
+<div class="strip">
+    <div class="top-menu">
+        <span class="menu"> </span>
+        <ul id="topmenu">
+            <a href="index.html" class="logo13"><img src="images/logo1.png"></a>
+            <li ><a href="index.html">Главная</a></li>
+            <li><a href="about.html">О нас</a></li>
+            <li><a href="shop.html">Каталог</a></li>
+            <li class="active"><a href="offers.html" >Акции</a></li>
+            <li><a href="FAQ.html">Помощь</a></li>
+            <li><a href="service.html">Оплата и доставка</a></li>
+            <li><a href="contact.html">Контакты</a></li>
+            <div class="clearfix"></div>
+        </ul>
+    </div>
+    <!----- script-for-nav ---->
+    <script>
+        $("span.menu").click(function () {
+            $(".top-menu ul").slideToggle("slow", function () {
+                // Animation complete.
+            });
+        });
+    </script>
+    <!----- script-for-nav ---->
+</div>
+
+<div class="col-md-9 ctnt-bar" id="offers">
+    <div class="content-bar" style="margin-top: 150px;">
+        <ul class="product-head">
+            <li><a href="index.html">Главная</a> <span>::</span></li>
+            <li class="active-page">Акции</li>
+            <div class="clear"></div>
+        </ul>
+        <div class="timer timer-1" style="margin-bottom: 30px">
+            <div class="timer__items">
+                <div class="timer__item timer__days">00</div>
+                <div class="timer__item timer__hours">00</div>
+                <div class="timer__item timer__minutes">00</div>
+                <div class="timer__item timer__seconds">00</div>
+            </div>
+        </div>
+        <div class="products-row">
+            <a href="single.html">
+                <div class="product-grid boats-grid">
+                    <div class="more-product-info"><span> </span></div>
+                    <div class="product-img b-link-stripe b-animate-go  thickbox">
+                        Лодка Адмирал АМ-330 Comfort НДНД
+                        <img src="images/2.jpg" alt="">
+                        <div class="b-wrapper">
+                            <h4 class="b-animate b-from-left  b-delay03 shoponline">
+                                <a href="single.html" class="btns">Купить</a>
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-info-cust">
+                            <a href="details.html">Подробнее</a>
+                        </div>
+                        <div class="product-info-price">
+                            <a href="details.html"><s>99.000&#x20bd;</s> 53.200&#x20bd;</a>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </a>
+            <a href="single.html">
+                <div class="product-grid">
+                    <div class="more-product-info"><span> </span></div>
+                    <div class="product-img b-link-stripe b-animate-go  thickbox">
+                        Надувная лодка ПВХ Marlin 330
+                        <img src="images/naduvnaja_lodka_pvx_marlin_330.jpg" alt="">
+                        <div class="b-wrapper">
+                            <h4 class="b-animate b-from-left  b-delay03 shoponline">
+                                <a href="single.html" class="btns">Купить</a>
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-info-cust">
+                            <a href="details.html">Подробнее</a>
+                        </div>
+                        <div class="product-info-price">
+                            <a href="details.html"><s>99.000&#x20bd;</s> 37.000&#x20bd;</a>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </a>
+            <a href="single.html">
+                <div class="product-grid">
+                    <div class="more-product-info"><span> </span></div>
+                    <div class="product-img b-link-stripe b-animate-go  thickbox">
+                        Надувная лодка BoatMaster 250 Эгоист Люкс
+                        <img src="images/img_066724_enl-2.jpg" alt="">
+                        <div class="b-wrapper">
+                            <h4 class="b-animate b-from-left  b-delay03 shoponline">
+                                <a href="single.html" class="btns">Купить</a>
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-info-cust">
+                            <a href="details.html">Подробнее</a>
+                        </div>
+                        <div class="product-info-price">
+                            <a href="details.html"><s>99.000&#x20bd;</s> 21.000&#x20bd;</a>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </a>
+            <a href="single.html">
+                <div class="product-grid boats-grid">
+                    <div class="more-product-info"><span></span></div>
+                    <div class="product-img b-link-stripe b-animate-go  thickbox">
+                        Надувная лодка ПВХ Marlin 330 А
+                        <img src="images/naduvnaja_lodka_pvx_marlin_330_a.jpg" alt="">
+                        <div class="b-wrapper">
+                            <h4 class="b-animate b-from-left  b-delay03 shoponline">
+                                <a href="single.html" class="btns">Купить</a>
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-info-cust">
+                            <a href="details.html">Подробнее</a>
+                        </div>
+                        <div class="product-info-price">
+                            <a href="details.html"><s>99.000&#x20bd;</s> 49.100&#x20bd;</a>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </a>
+            <!--                    <a href="single.html">-->
+            <!--                        <div class="product-grid boats-grid">-->
+            <!--                            <div class="more-product-info"><span> </span></div>-->
+            <!--                            <div class="product-img b-link-stripe b-animate-go  thickbox">-->
+            <!--                                <img src="images/boats5.jpg" alt="">-->
+            <!--                                <div class="b-wrapper">-->
+            <!--                                    <h4 class="b-animate b-from-left  b-delay03 shoponline">-->
+            <!--                                        <a href="single.html" class="btns">Купить</a>-->
+            <!--                                    </h4>-->
+            <!--                                </div>-->
+            <!--                            </div>-->
+            <!--                            <div class="product-info">-->
+            <!--                                <div class="product-info-cust">-->
+            <!--                                    <a href="details.html">Подробнее</a>-->
+            <!--                                </div>-->
+            <!--                                <div class="product-info-price">-->
+            <!--                                    <a href="details.html">&#8356;380</a>-->
+            <!--                                </div>-->
+            <!--                                <div class="clearfix"></div>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+            <!--                    </a>-->
+            <!--                    <a href="single.html">-->
+            <!--                        <div class="product-grid">-->
+            <!--                            <div class="more-product-info"><span> </span></div>-->
+            <!--                            <div class="product-img b-link-stripe b-animate-go  thickbox">-->
+            <!--                                <img src="images/boats6.jpg" alt="">-->
+            <!--                                <div class="b-wrapper">-->
+            <!--                                    <h4 class="b-animate b-from-left  b-delay03 shoponline">-->
+            <!--                                        <a href="single.html" class="btns">Купить</a>-->
+            <!--                                    </h4>-->
+            <!--                                </div>-->
+            <!--                            </div>-->
+            <!--                            <div class="product-info">-->
+            <!--                                <div class="product-info-cust">-->
+            <!--                                    <a href="details.html">Подробнее</a>-->
+            <!--                                </div>-->
+            <!--                                <div class="product-info-price">-->
+            <!--                                    <a href="details.html">&#8356;380</a>-->
+            <!--                                </div>-->
+            <!--                                <div class="clearfix"></div>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+            <!--                    </a>-->
+            <!--                    <a href="single.html">-->
+            <!--                        <div class="product-grid">-->
+            <!--                            <div class="more-product-info"><span> </span></div>-->
+            <!--                            <div class="product-img b-link-stripe b-animate-go  thickbox">-->
+            <!--                                <img src="images/boats7.jpg" alt="">-->
+            <!--                                <div class="b-wrapper">-->
+            <!--                                    <h4 class="b-animate b-from-left  b-delay03 shoponline">-->
+            <!--                                        <a href="single.html" class="btns">Купить</a>-->
+            <!--                                    </h4>-->
+            <!--                                </div>-->
+            <!--                            </div>-->
+            <!--                            <div class="product-info">-->
+            <!--                                <div class="product-info-cust">-->
+            <!--                                    <a href="details.html">Подробнее</a>-->
+            <!--                                </div>-->
+            <!--                                <div class="product-info-price">-->
+            <!--                                    <a href="details.html">&#8356;380</a>-->
+            <!--                                </div>-->
+            <!--                                <div class="clearfix"></div>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+            <!--                    </a>-->
+            <!--                    <a href="single.html">-->
+            <!--                        <div class="product-grid">-->
+            <!--                            <div class="more-product-info"><span> </span></div>-->
+            <!--                            <div class="product-img b-link-stripe b-animate-go  thickbox">-->
+            <!--                                <img src="images/boats8.jpg" alt="">-->
+            <!--                                <div class="b-wrapper">-->
+            <!--                                    <h4 class="b-animate b-from-left  b-delay03 shoponline">-->
+            <!--                                        <a href="single.html" class="btns">Купить</a>-->
+            <!--                                    </h4>-->
+            <!--                                </div>-->
+            <!--                            </div>-->
+            <!--                            <div class="product-info">-->
+            <!--                                <div class="product-info-cust">-->
+            <!--                                    <a href="details.html">Подробнее</a>-->
+            <!--                                </div>-->
+            <!--                                <div class="product-info-price">-->
+            <!--                                    <a href="details.html">&#8356;380</a>-->
+            <!--                                </div>-->
+            <!--                                <div class="clearfix"></div>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+            <!--                    </a>-->
+            <!--                    <a href="single.html">-->
+            <!--                        <div class="product-grid  boats-grid2">-->
+            <!--                            <div class="more-product-info"><span> </span></div>-->
+            <!--                            <div class="product-img b-link-stripe b-animate-go  thickbox">-->
+            <!--                                <img src="images/boats9.jpg" alt="">-->
+            <!--                                <div class="b-wrapper">-->
+            <!--                                    <h4 class="b-animate b-from-left  b-delay03 shoponline">-->
+            <!--                                        <a href="single.html" class="btns">Купить</a>-->
+            <!--                                    </h4>-->
+            <!--                                </div>-->
+            <!--                            </div>-->
+            <!--                            <div class="product-info">-->
+            <!--                                <div class="product-info-cust">-->
+            <!--                                    <a href="details.html">Подробнее</a>-->
+            <!--                                </div>-->
+            <!--                                <div class="product-info-price">-->
+            <!--                                    <a href="details.html">&#8356;380</a>-->
+            <!--                                </div>-->
+            <!--                                <div class="clearfix"></div>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+            <!--                    </a>-->
+            <!--                    <a href="single.html">-->
+            <!--                        <div class="product-grid  boats-grid2">-->
+            <!--                            <div class="more-product-info"><span> </span></div>-->
+            <!--                            <div class="product-img b-link-stripe b-animate-go  thickbox">-->
+            <!--                                <img src="images/boats10.jpg" alt="">-->
+            <!--                                <div class="b-wrapper">-->
+            <!--                                    <h4 class="b-animate b-from-left  b-delay03 shoponline">-->
+            <!--                                        <a href="single.html" class="btns">Купить</a>-->
+            <!--                                    </h4>-->
+            <!--                                </div>-->
+            <!--                            </div>-->
+            <!--                            <div class="product-info">-->
+            <!--                                <div class="product-info-cust">-->
+            <!--                                    <a href="details.html">Подробнее</a>-->
+            <!--                                </div>-->
+            <!--                                <div class="product-info-price">-->
+            <!--                                    <a href="details.html">&#8356;380</a>-->
+            <!--                                </div>-->
+            <!--                                <div class="clearfix"></div>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+            <!--                    </a>-->
+            <!--                    <a href="single.html">-->
+            <!--                        <div class="product-grid  boats-grid2">-->
+            <!--                            <div class="more-product-info"><span> </span></div>-->
+            <!--                            <div class="product-img b-link-stripe b-animate-go  thickbox">-->
+            <!--                                <img src="images/boats11.jpg" alt="">-->
+            <!--                                <div class="b-wrapper">-->
+            <!--                                    <h4 class="b-animate b-from-left  b-delay03 shoponline">-->
+            <!--                                        <a href="single.html" class="btns">Купить</a>-->
+            <!--                                    </h4>-->
+            <!--                                </div>-->
+            <!--                            </div>-->
+            <!--                            <div class="product-info">-->
+            <!--                                <div class="product-info-cust">-->
+            <!--                                    <a href="details.html">Подробнее</a>-->
+            <!--                                </div>-->
+            <!--                                <div class="product-info-price">-->
+            <!--                                    <a href="details.html">&#8356;380</a>-->
+            <!--                                </div>-->
+            <!--                                <div class="clearfix"></div>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+            <!--                    </a>-->
+            <!--                    <a href="single.html">-->
+            <!--                        <div class="product-grid boats-grid">-->
+            <!--                            <div class="more-product-info"><span> </span></div>-->
+            <!--                            <div class="product-img b-link-stripe b-animate-go  thickbox">-->
+            <!--                                <img src="images/boats12.jpg" alt="">-->
+            <!--                                <div class="b-wrapper">-->
+            <!--                                    <h4 class="b-animate b-from-left  b-delay03 shoponline">-->
+            <!--                                        <a href="single.html" class="btns">Купить</a>-->
+            <!--                                    </h4>-->
+            <!--                                </div>-->
+            <!--                            </div>-->
+            <!--                            <div class="product-info">-->
+            <!--                                <div class="product-info-cust">-->
+            <!--                                    <a href="details.html">Подробнее</a>-->
+            <!--                                </div>-->
+            <!--                                <div class="product-info-price">-->
+            <!--                                    <a href="details.html">&#8356;380</a>-->
+            <!--                                </div>-->
+            <!--                                <div class="clearfix"></div>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+            <!--                    </a>-->
+            <div class="clearfix"></div>
+        </div>
+
+    </div>
+</div>
+<div class="clearfix"></div>
+
+</div>
+
+</div>
+
+<div class="contact" id="contact">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d952.8702222415943!2d86.00224708733825!3d55.387320641373336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x42d80ae6b4b71eed%3A0x881855b423484443!2z0KHQtdCy0LDRgdGC0L7Qv9C-0LvRjNGB0LrQsNGPINGD0LsuLCAyLCDQmtC10LzQtdGA0L7QstC-LCDQmtC10LzQtdGA0L7QstGB0LrQsNGPINC-0LHQuy4sIDY1MDAwMQ!5e0!3m2!1sru!2sru!4v1671170989537!5m2!1sru!2sru"
+            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <div class="container">
+        <div class="contact-top">
+            <h3>Наш магазин</h3>
+            <a href="mailto:klevoesudno@inbox.com">klevoesudno@inbox.com</a>
+            <p>+7 943 313 131</p>
+            <a class="site" href="index.html">www.klevoesudno.ru</a>
+        </div>
+        <div class="nip"></div>
+    </div>
+</div>
+<!---->
+<div class="fotter">
+    <div class="container">
+        <div class="fotter-info">
+            <div class="fotter-logo">
+                <a href="imdex.html"><img src="images/logo1.png" alt=""/></a>
+            </div>
+            <div class="fotter-menu">
+                <ul>
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="about.html">О нас</a></li>
+                    <li><a href="shop.html">Магазин</a></li>
+                    <li><a href="offers.html">Акции</a></li>
+                    <li><a href="service.html">Услуги</a></li>
+                    <li><a href="FAQ.html">Помощь</a></li>
+                    <li><a href="contact.html">Контакты</a></li>
+                    <div class="clearfix"></div>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <p class="copy-right">&copy;Клёвое судно) - 2022</p>
+</div>
+</body>
+</html>
