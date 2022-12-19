@@ -1,0 +1,168 @@
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Boating flat responsive e-commerce Bootstarp Website Template | Home :: w3layouts</title>
+    <link href='http://fonts.googleapis.com/css?family=Raleway:400,200,600,800,700,500,300,100,900'
+          rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Arimo:400,700,700italic' rel='stylesheet'
+          type='text/css'>
+    <link href="css/bootstrap.css" rel='stylesheet' type='text/css'/>
+    <link href="css/style.css" media="all" rel="stylesheet" type="text/css"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <script src="js/jquery.min.js"></script>
+</head>
+<body>
+<!--topheader starts-->
+<div class="strip">
+    <div class="top-menu">
+        <span class="menu"> </span>
+        <ul id="topmenu">
+            <a href="index.html" class="logo13"><img src="images/logo1.png" width="100" height="75"></a>
+            <li><a href="index.html">Главная</a></li>
+            <li><a href="about.html">О нас</a></li>
+            <li class="active-page"><a href="shop.html">Каталог</a></li>
+            <li><a href="offers.html">Акции</a></li>
+            <li><a href="FAQ.html">Помощь</a></li>
+            <li><a href="service.html">Оплата и доставка</a></li>
+            <li><a href="contact.html">Контакты</a></li>
+            <div class="clearfix"></div>
+        </ul>
+    </div>            <!----- script-for-nav ---->
+    <script>
+        $("span.menu").click(function () {
+            $(".top-menu ul").slideToggle("slow", function () {
+                // Animation complete.
+            });
+        });
+    </script>
+    <!----- script-for-nav ---->
+
+</div>
+</div>
+</div>
+<!--topheader ends-->
+<!-- Single Page starts Here -->
+<div class="product">
+    <div class="container">
+        <div class="col-md-9 ctnt-bar cntnt">
+            <div class="content-bar">
+                <div class="single-page">
+                    <ul class="product-head">
+                        <li><a href="index.html">Главная</a> <span>::</span></li>
+                        <li><a href="shop.html">Надувные лодки</a> <span>::</span></li>
+                        <li class="active-page">Лодка Адмирал АМ-330 Comfort НДНД</li>
+                        <div class="clear"></div>
+                    </ul>
+                    <!-- Include the Etalage files -->
+                    <link href="css/etalage.css" rel="stylesheet">
+                    <script src="js/jquery.etalage.min.js"></script>
+                    <!-- Include the Etalage files -->
+                    <script>
+                        jQuery(document).ready(function ($) {
+
+                            $('#etalage').etalage({
+                                thumb_image_width: 300,
+                                thumb_image_height: 400,
+                                source_image_width: 600,
+                                source_image_height: 1000,
+                                show_hint: true,
+                                click_callback: function (image_anchor, instance_id) {
+                                    alert('Callback example:\nYou clicked on an image with the anchor: "' + image_anchor + '"\n(in Etalage instance: "' + instance_id + '")');
+                                }
+                            });
+                            // This is for the dropdown list example:
+                            $('.dropdownlist').change(function () {
+                                etalage_show($(this).find('option:selected').attr('class'));
+                            });
+
+                        });
+                    </script>
+                    <!----//details-product-slider--->
+                    <div class="details-left-slider">
+                        <ul id="etalage">
+                            <li>
+                                <a href="optionallink.html">
+                                    <img class="etalage_thumb_image"
+                                         src="images/1-29-1024x683.jpg" style="object-fit: contain"/>
+                                    <img class="etalage_source_image"
+                                         src="images/1-29-1024x683.jpg" style="object-fit: contain"/>
+                                </a>
+                            </li>
+                            <li>
+                                <img class="etalage_thumb_image" src="images/2-25-266x400.jpg" style="object-fit: contain"/>
+                                <img class="etalage_source_image" src="images/2-25-266x400.jpg" style="object-fit: contain"/>
+                            </li>
+                            <li>
+                                <img class="etalage_thumb_image" src="images/3-25-266x400.jpg" style="object-fit: contain"/>
+                                <img class="etalage_source_image" src="images/3-25-266x400.jpg" style="object-fit: contain"/>
+                            </li>
+                            <li>
+                                <img class="etalage_thumb_image" src="images/5-19-1024x683.jpg" style="object-fit: contain"/>
+                                <img class="etalage_source_image" src="images/5-19-1024x683.jpg" style="object-fit: contain"/>
+                            </li>
+                            <div class="clearfix"></div>
+                        </ul>
+                    </div>
+                    <div class="details-left-info">
+                        <div class="price_single">
+                            <span class="reducedfrom">53.300&#x20bd;</span>
+                            <span class="actual">53.200&#x20bd;</span>
+                        </div>
+                    </div>
+                    <h2 class="quick">Описание</h2>
+                    <p class="quick_desc"> Адмирал 330 CF НДНД – это многофункциональная лодка
+                        повышенной комфортабельности (CF-комфорт) – в этой серии лодок данная
+                        модель отличается самым просторным кокпитом. Среди ее преимуществ можно
+                        отметить:</p>
+                    <ul class="size">
+                        <h3>Категории</h3>
+                        <li><a href="#">Лодки</a></li>
+                        <li><a href="#">Надувные</a></li>
+                    </ul>
+
+                    <div class="single-but">
+                        <a href="contact.html"><input type="submit" value="Купить"/></a>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+</div>
+
+<!---->
+<div class="fotter">
+    <div class="container">
+        <div class="fotter-info">
+            <div class="fotter-logo">
+                <a href="imdex.html"><img src="images/logo1.png" alt=""/></a>
+            </div>
+            <div class="fotter-menu">
+                <ul>
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="about.html">О нас</a></li>
+                    <li><a href="shop.html">Магазин</a></li>
+                    <li><a href="service.html">Услуги</a></li>
+                    <li><a href="FAQ.html">Помощь</a></li>
+                    <li><a href="contact.html">Контакты</a></li>
+                    <div class="clearfix"></div>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <p class="copy-right">&copy;Клёвое судно) - 2022</p>
+</div>
+</div>
+
+<!---->
+</body>
+</html>

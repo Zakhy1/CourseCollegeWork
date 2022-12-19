@@ -88,7 +88,7 @@ for (i = 0; i < acc.length; i++) {
       const elHours1 = document.querySelector('.timer-1 .timer__hours');
       const elMinutes1 = document.querySelector('.timer-1 .timer__minutes');
       const elSeconds1 = document.querySelector('.timer-1 .timer__seconds');
-      const deadline1 = new Date(Date.now() + (60 * 1000 + 999));
+      const deadline1 = new Date("");
       new CountdownTimer(deadline1, (timer) => {
         elDays1.textContent = timer.days;
         elHours1.textContent = timer.hours;
@@ -101,4 +101,4 @@ for (i = 0; i < acc.length; i++) {
       }, () => {
         document.querySelector('.timer-1 .timer__result').textContent = 'Таймер завершился!';
       });
-    }
+    })
